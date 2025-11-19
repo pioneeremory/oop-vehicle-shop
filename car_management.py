@@ -1,7 +1,7 @@
 class CarManager:
 
-    all_cars = []
-    total_cars: 0
+    all_cars = {}
+    total_cars = 0
 
     def __init__(self, _id, _make, _model, _year, _mileage, _services):
         self._id = _id
@@ -10,6 +10,10 @@ class CarManager:
         self._year = _year
         self._mileage = _mileage
         self._services = _services
+        
+
+    def __str__(self):
+        return f'printing the {self._id}, {self._make}'
 
     def terminal_ui(self):
         print("""
@@ -22,36 +26,63 @@ class CarManager:
         6. Update mileage
         7. Quit""")
 
-        menu_items = {
-            "1": self.add_car,
-            "2": self.view_car,
-            "3": self.view_car_num,
-            "4": self.car_detail,
-            "5": self.service_car,
-            "6": self.update_mileage,
-            "7": self.quit_program
-        }
-      
+        user_choice = int(input("What would you like to do? (Enter a number 1-7): "))
+        if user_choice == 1:
+            CarManager.add_car(self)
+        elif user_choice == 2:
+            CarManager.view_car(self)
+        elif user_choice == 3:
+            CarManager.view_car_num(self)
+        elif user_choice == 4:
+            CarManager.car_detail(self)
+        elif user_choice == 5:
+            CarManager.service_car(self)
+        elif user_choice == 6:
+            CarManager.update_mileage(self)
+        else:
+            print("See you next time!")
+            CarManager.quit_program(self)
+        
     def add_car(self):
-        self._id = input('Welcome to the Add Car wizard. Please enter the vehicle ID: ')
-        self._make = input('What is the make of the car?: ')
-        self._model = input('What is the model of the car?: ')
-        self._year = input('What is the year of the car?: ')
-        self._mileage = input('How many miles does the car have?: ')
-        self._services = input('Were any services performed?: ')
+        #need to make id unique and increment by 1 based on other entries in all_cars
+        if len(CarManager.all_cars) > 0:
+            new_id = len(CarManager.all_cars) +1
+        else:
+            new_id = 1
+        make = input('What is the make of the car?: ')
+        model = input('What is the model of the car?: ')
+        year = input('What is the year of the car?: ')
+        mileage = input('How many miles does the car have?: ')
+        services = input('Were any services performed?: ')
 
-        CarManager.all_cars.append(self)
-        total_cars += 1
+        new_car = CarManager(new_id, make, model, year, mileage, services)
+
+        CarManager.all_cars[new_id] = new_car
+        CarManager.total_cars += 1
+        print(CarManager.all_cars[new_id])
+
+        decision = input("Type back to return to the menu, otherwise, type exit: ")
+        if decision == "back":
+            CarManager.terminal_ui(self)
+        else:
+            CarManager.quit_program(self)
     
     def view_car(self):
-        print(f"Here's a list of all the cars in the garage: \n {self.all.cars}")
+        # print(f"Here's a list of all the cars in the garage: \n {CarManager.all_cars[self.new_id]}")
+        for car_id, car in CarManager.all_cars.items():
+            print(f"ID {car_id}: {car._make} {car._model} ({car._year})")
+        decision = input("Type back to return to the menu, otherwise, type exit: ")
+        if decision == "back":
+            CarManager.terminal_ui(self)
+        else:
+            CarManager.quit_program(self)
 
     def view_car_num(self):
-        print(f"There are currently {self.total_cars} in the garage.")
+        print(f"There are currently {CarManager.total_cars} in the garage.")
     
     def car_detail(self, id):
         self.id = id
-        for i in self.all_cars.items():
+        for i in CarManager.all_cars.items():
             if i["ID"] == id:
                 print(f"Here are the details for car with the ID of {id}: {i}")
                 #for key, value in self.all_cars:
@@ -66,7 +97,10 @@ class CarManager:
         return True
     
 
-car1 = CarManager("s", "2", "3", "3", "four", "44", "Timmy")
+car1 = CarManager("s", "2", "3", "3", "four", "44")
+CarManager.terminal_ui(car1)
+
+
 
 
 
