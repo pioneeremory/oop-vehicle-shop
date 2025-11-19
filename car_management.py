@@ -1,6 +1,6 @@
 class CarManager:
 
-    all_cars = {}
+    all_cars = []
     total_cars: 0
 
     def __init__(self, _id, _make, _model, _year, _mileage, _services):
@@ -33,7 +33,6 @@ class CarManager:
         }
       
     def add_car(self):
-
         self._id = input('Welcome to the Add Car wizard. Please enter the vehicle ID: ')
         self._make = input('What is the make of the car?: ')
         self._model = input('What is the model of the car?: ')
@@ -41,21 +40,9 @@ class CarManager:
         self._mileage = input('How many miles does the car have?: ')
         self._services = input('Were any services performed?: ')
 
-        key = self.id
-
-        car = {
-        "ID": self._id,
-        "Make": self._make,
-        "Model": self._model,
-        "Year": self._year,
-        "Mileage": self._mileage,
-        "Services": self._services
-        }
-
-        self.all_cars[key] = car
+        CarManager.all_cars.append(self)
         total_cars += 1
     
-        print(car)
     def view_car(self):
         print(f"Here's a list of all the cars in the garage: \n {self.all.cars}")
 
@@ -78,3 +65,8 @@ class CarManager:
     def quit_program(self):
         return True
     
+
+car1 = CarManager("s", "2", "3", "3", "four", "44", "Timmy")
+
+
+
